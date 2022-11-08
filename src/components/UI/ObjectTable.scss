@@ -1,0 +1,25 @@
+// -----------------------------------------------
+// Imports ///////////////////////////////////////
+// -----------------------------------------------
+@import "../../global.scss";
+
+// -----------------------------------------------
+// Styling ///////////////////////////////////////
+// -----------------------------------------------
+
+table.ObjectTable {
+  width: 100%;
+  margin-bottom: 10px;
+
+  & tbody > tr > td.left {
+    text-align: left;
+    vertical-align: top;
+  }
+
+  & tbody > tr > td.right {
+    text-align: right;
+    vertical-align: top;
+    font-weight: 400;
+    color: Black;
+  }
+}

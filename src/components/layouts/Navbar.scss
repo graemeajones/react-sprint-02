@@ -1,0 +1,27 @@
+// -----------------------------------------------
+// Imports ///////////////////////////////////////
+// -----------------------------------------------
+@import "../../global.scss";
+
+// -----------------------------------------------
+// Styling ///////////////////////////////////////
+// -----------------------------------------------
+
+nav.Navbar {
+  display: flex;
+  overflow: hidden;
+  background-color: $NavbarBackgroundColor;
+
+  & > div.navItem { 
+    padding: 10px; 
+
+    &:hover { background-color: $NavbarHoverBackgroundColor; }
+
+    & > a {
+      color: White; 
+      text-decoration: none; 
+
+      &.navSelected { color: Black; }
+    }
+  }
+}

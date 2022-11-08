@@ -1,0 +1,23 @@
+// -----------------------------------------------
+// Imports ///////////////////////////////////////
+// -----------------------------------------------
+@import "../../global.scss";
+
+// -----------------------------------------------
+// Styling ///////////////////////////////////////
+// -----------------------------------------------
+
+div.ToolTipDecorator {
+  position: relative;
+  
+  div.ToolTip {
+    min-width: 100px;
+    padding: 5px;
+    color: White;
+    font-size: 90%;
+    text-align: center;
+    border-radius: 5px;
+    background: $Red;
+    position: absolute;
+  }
+}

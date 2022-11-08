@@ -1,0 +1,152 @@
+// -----------------------------------------------
+// Imports ///////////////////////////////////////
+// -----------------------------------------------
+@import "../../global.scss";
+
+// -----------------------------------------------
+// Styling ///////////////////////////////////////
+// -----------------------------------------------
+
+// Panel Colours ---------------------------------
+
+$PanelColors: (
+  0:   #004180,
+  1:   #005ab3,
+  2:   #0074e6,
+  3:   #1a8eff,
+  4:   #4da7ff,
+  5:   #80c0ff,
+  6:   #b3d9ff,
+  7:   #e5f2ff
+);
+
+@function GetPanelColor($level) {
+  @return map-get($PanelColors, $level);
+}
+
+// Panel Container -------------------------------
+
+div.PanelContainer {
+  /* Appearance */
+  padding-top: 10px;
+  width: 100%;
+
+  /* Layout */
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+// StaticPanel -----------------------------------
+
+div.StaticPanel {
+  /* Appearance */
+  padding: 10px;
+  border-radius: 5px;
+  background: none;
+
+  &.PanelLevel1 { border: 1px solid GetPanelColor(3); color: GetPanelColor(1); font-weight: 500; } 
+  &.PanelLevel2 { border: 1px solid GetPanelColor(4); color: GetPanelColor(2); font-weight: 500; }
+  &.PanelLevel3 { border: 1px solid GetPanelColor(5); color: GetPanelColor(3); font-weight: 400; }
+  &.PanelLevel4 { border: 1px solid GetPanelColor(6); color: GetPanelColor(4); font-weight: 300; }
+  &.PanelLevel5 { border: 1px solid GetPanelColor(7); color: GetPanelColor(5); font-weight: 300; }
+}
+
+// Panel -----------------------------------------
+
+div.Panel {
+  /* Appearance */
+  border-radius: 5px;
+  background: none;
+
+  & > header {
+    padding: 10px;
+    background: none;
+    border-radius: 5px;
+    font-size: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &.PanelOpen > header {
+    border-radius: 5px 5px 0 0;
+  }
+
+  &.PanelOpen > main {
+    padding: 10px;
+    border-radius: 0 0 5px 5px;
+  }
+
+  & > main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  // Level Styling -------------------------------
+  &.PanelLevel1 {
+    & > main { border: 1px solid GetPanelColor(3); }
+    & > header {
+      background: GetPanelColor(3); 
+      & > span.title {
+        color: GetPanelColor(7); 
+        text-transform: uppercase; 
+        font-weight: 600; 
+        letter-spacing: 1px; 
+      }
+    }
+  }
+  &.PanelLevel2 { 
+    & > main { border: 1px solid GetPanelColor(4); }
+    & > header {
+      background: GetPanelColor(4); 
+      & > span.title {
+        color: White; 
+        text-transform: none; 
+        font-weight: 500; 
+        letter-spacing: 0.5px; 
+      }
+    }
+  }
+  &.PanelLevel3 {
+    & > main { border: 1px solid GetPanelColor(5); }
+    & > header {
+      background: GetPanelColor(5); 
+      & > span.title {
+        color: GetPanelColor(0); 
+        text-transform: none; 
+        font-weight: 400; 
+        letter-spacing: 0px; 
+      }
+    }
+  }
+  &.PanelLevel4 { 
+    & > main { border: 1px solid GetPanelColor(6); }
+    & > header {
+      background: GetPanelColor(6); 
+      & > span.title {
+        color: GetPanelColor(1); 
+        text-transform: none; 
+        font-weight: 300; 
+        letter-spacing: 0px; 
+      }
+    }
+  }
+  &.PanelLevel5 { 
+    & > main { border: 1px solid GetPanelColor(7); }
+    & > header { 
+      background: GetPanelColor(7); 
+      & > span.title {
+        color: GetPanelColor(2); 
+        text-transform: none; 
+        font-weight: 200; 
+        letter-spacing: 0px; 
+      }
+    }
+  }
+
+}
+  

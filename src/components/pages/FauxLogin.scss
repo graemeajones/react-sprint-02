@@ -1,0 +1,37 @@
+// -----------------------------------------------
+// Imports ///////////////////////////////////////
+// -----------------------------------------------
+@import "../../global.scss";
+
+// -----------------------------------------------
+// Login Form ////////////////////////////////////
+// -----------------------------------------------
+
+label {
+  font-weight: 400;
+}
+label, select {
+  display: block;
+}
+
+select, button {
+  width: 100%;
+  padding: 3px;
+  margin: 3px 0;
+  font-size: 100%;
+  border-radius: 0px;
+  border: 1px solid LightGrey; 
+}
+
+select {
+  background: White;
+  margin-bottom: 30px;
+}
+
+button {
+  background: LightGrey;
+}
+
+.formError {
+  color: $DarkRed;
+}

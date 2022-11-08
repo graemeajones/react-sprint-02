@@ -1,0 +1,23 @@
+// -----------------------------------------------
+// Styling ///////////////////////////////////////
+// -----------------------------------------------
+
+div.Badge {
+  /* Appearance */
+  height: 24px;
+  width: 24px;
+  color: White;
+  font-size: 90%;
+  background: DodgerBlue;
+  border-radius: 12px;
+
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Position */
+  position: absolute;
+  top: 0;
+  left: 0;
+}

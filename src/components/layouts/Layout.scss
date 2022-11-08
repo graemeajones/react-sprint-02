@@ -1,0 +1,36 @@
+// -----------------------------------------------
+// Imports ///////////////////////////////////////
+// -----------------------------------------------
+@import "../../global.scss";
+
+// -----------------------------------------------
+// Styling ///////////////////////////////////////
+// -----------------------------------------------
+
+div#root {
+  background: $PageBackgroundColor;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  & > div.Layout {
+    background: $LayoutBackgroundColor;
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    /* grid-template-rows: auto auto 1fr auto; /* Use this if removing sticky header */
+  
+    & > main.Layout {
+      padding: 30px;
+      width: 100%;
+    }
+  }
+}
+
+div.StickyHeader {
+  position: -webkit-sticky; 
+  position:sticky; 
+  top: 0;
+  z-index: 1;
+}
