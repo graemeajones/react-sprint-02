@@ -24,7 +24,7 @@ const callFetch = async (endpoint, method, dataObj) => {
     const result = await response.json();
     return (response.status >= 200) && (response.status < 300)
       ? { isSuccess: true, result: result }
-      : { isSuccess: false, message: `Error recovering records: status code ${response.status}` }
+      : { isSuccess: false, message: `${result.message}` }
   }
   catch (error) {
     return { isSuccess: false, message: error.message };
