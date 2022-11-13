@@ -63,7 +63,7 @@ ActionClose.propTypes = ActionPropTypes;
 
 export function ActionClose({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "Close"} onClick={onClick} showText={showText} >
       <Icon.Cross />
     </ActionButton>
   );
@@ -73,7 +73,7 @@ ActionDelete.propTypes = ActionPropTypes;
 
 export function ActionDelete({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "Delete"} onClick={onClick} showText={showText} >
       <Icon.Trash />
     </ActionButton>
   );
@@ -83,7 +83,7 @@ ActionFavourites.propTypes = ActionPropTypes;
 
 export function ActionFavourites({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "Favourite"} onClick={onClick} showText={showText} >
       <Icon.RedHeart />
     </ActionButton>
   );
@@ -93,7 +93,7 @@ ActionListAll.propTypes = ActionPropTypes;
 
 export function ActionListAll({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "List"} onClick={onClick} showText={showText} >
       <Icon.List />
     </ActionButton >
   );
@@ -103,7 +103,7 @@ ActionModify.propTypes = ActionPropTypes;
 
 export function ActionModify({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "Modify"} onClick={onClick} showText={showText} >
       <Icon.Pen />
     </ActionButton>
   );
@@ -113,7 +113,7 @@ ActionNo.propTypes = ActionPropTypes;
 
 export function ActionNo({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "No"} onClick={onClick} showText={showText} >
       <Icon.Cross />
     </ActionButton>
   );
@@ -123,7 +123,7 @@ ActionSubscribe.propTypes = ActionPropTypes;
 
 export function ActionSubscribe({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "Subscribe"} onClick={onClick} showText={showText} >
       <Icon.Tick />
     </ActionButton>
   );
@@ -133,7 +133,7 @@ ActionYes.propTypes = ActionPropTypes;
 
 export function ActionYes({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "Yes"} onClick={onClick} showText={showText} >
       <Icon.Tick />
     </ActionButton>
   );
@@ -143,7 +143,7 @@ ActionUnsubscribe.propTypes = ActionPropTypes;
 
 export function ActionUnsubscribe({ onClick, showText=false, buttonText=null}) {
   return (
-    <ActionButton buttonText={buttonText || "Add"} onClick={onClick} showText={showText} >
+    <ActionButton buttonText={buttonText || "Unsubscribe"} onClick={onClick} showText={showText} >
       <Icon.Cross />
     </ActionButton>
   );
