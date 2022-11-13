@@ -32,6 +32,8 @@ export default function MyModules() {
 
   const handleAdd = () => setShowNewModuleForm(true);
   const handleJoin = () => setShowJoinModuleForm(true);
+  const handleDismissAdd = () => setShowNewModuleForm(false);
+  const handleDismissJoin = () => setShowJoinModuleForm(false);
       
   // View ----------------------------------------
   return (
@@ -57,7 +59,7 @@ export default function MyModules() {
       </ActionTray>
 
       {
-        showNewModuleForm && <ModuleForm />
+        showNewModuleForm && <ModuleForm onDismiss={handleDismissAdd} />
       }
       {
         showJoinModuleForm && <p>{"<JoinModuleForm />"}</p>
