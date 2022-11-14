@@ -5,15 +5,15 @@ import { ActionTray, ActionAdd, ActionClose } from '../../UI/Actions.js';
 import ToolTipDecorator from '../../UI/ToolTipDecorator.js';
 
 const emptyModule = {
-  ModuleName: "Dummy name",
-  ModuleCode: "XYZ",
+  ModuleName: "Dummy Module Name",
+  ModuleCode: "XY0123",
   ModuleLevel: 4,
-  ModuleYearID: 0,
+  ModuleYearID: 1,
   ModuleLeaderID: 0,
   ModuleImageURL: "https://images.freeimages.com/images/small-previews/fa1/cable-5-1243077.jpg"
 };
 
-export default function ModuleForm({ onDismiss, initialModule=emptyModule }) {
+export default function ModuleForm({ onDismiss, onSubmit, initialModule=emptyModule }) {
   // Initialisation ------------------------------
   const isValid = {
     ModuleName: (name) => name.length > 8,
@@ -88,7 +88,7 @@ export default function ModuleForm({ onDismiss, initialModule=emptyModule }) {
   const handleCancel = () => onDismiss();
   const handleSubmit = (event) => { 
     event.preventDefault();
-    isValidModule(module) && onDismiss();
+    isValidModule(module) && onSubmit(module) && onDismiss();
     setErrors({...errors});
   };
 
