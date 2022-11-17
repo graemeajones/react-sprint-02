@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react';
-import API from '../../api/API.js';
-import FormItem from '../../UI/Form.js';
-import { ActionTray, ActionAdd, ActionClose } from '../../UI/Actions.js';
-import ToolTipDecorator from '../../UI/ToolTipDecorator.js';
+import useLoad from '../../api/useLoad.js';
+import Form from '../../UI/Form.js';
+
 
 const emptyModule = {
   ModuleName: "Dummy Module Name",
@@ -13,90 +11,40 @@ const emptyModule = {
   ModuleImageURL: "https://images.freeimages.com/images/small-previews/fa1/cable-5-1243077.jpg"
 };
 
-export default function ModuleForm({ onDismiss, onSubmit, initialModule=emptyModule }) {
+export default function ModuleForm({ onCancel, onSubmit, initialModule=emptyModule }) {
   // Initialisation ------------------------------
-  const isValid = {
-    ModuleName: (name) => name.length > 8,
-    ModuleCode: (code) => /^\D{2}\d{4}$/.test(code),
-    ModuleLevel: (level) => (level > 2) && (level < 8),
-    ModuleYearID: (id) => id !== 0,
-    ModuleLeaderID: (id) => true,
-    ModuleImageURL: (url) => /^(http|https):\/\/(([a-zA-Z0-9$\-_.+!*'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\/(([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*(\/([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\?([a-zA-Z0-9$\-_.+!*'(),;:@&=/?]|%[0-9a-fA-F]{2})*)?(#([a-zA-Z0-9$\-_.+!*'(),;:@&=/?]|%[0-9a-fA-F]{2})*)?)?$/.test(url)
+  const validation = {
+    isValid: {
+      ModuleName: (name) => name.length > 8,
+      ModuleCode: (code) => /^\D{2}\d{4}$/.test(code),
+      ModuleLevel: (level) => (level > 2) && (level < 8),
+      ModuleYearID: (id) => id !== 0,
+      ModuleLeaderID: (id) => true,
+      ModuleImageURL: (url) => /^(http|https):\/\/(([a-zA-Z0-9$\-_.+!*'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\/(([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*(\/([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\?([a-zA-Z0-9$\-_.+!*'(),;:@&=/?]|%[0-9a-fA-F]{2})*)?(#([a-zA-Z0-9$\-_.+!*'(),;:@&=/?]|%[0-9a-fA-F]{2})*)?)?$/.test(url)
+    },
+    errorMessage: {
+      ModuleName: "Module name is too short",
+      ModuleCode: "Module code is not in a valid format",
+      ModuleLevel: "Invalid module level",
+      ModuleYearID: "No delivery year has been selected",
+      ModuleLeaderID: "No module leader has been selected",
+      ModuleImageURL: "Image URL is not a valid URL string"
+    }
   }
 
-  const errorMessage = {
-    ModuleName: "Module name is too short",
-    ModuleCode: "Module code is not in a valid format",
-    ModuleLevel: "Invalid module level",
-    ModuleYearID: "No delivery year has been selected",
-    ModuleLeaderID: "No module leader has been selected",
-    ModuleImageURL: "Image URL is not a valid URL string"
-  }
+  const conformance = ['ModuleLevel','ModuleYearID','ModuleLeaderID'];
 
   // State ---------------------------------------
-  const [module, setModule] = useState(initialModule);
-  const [errors, setErrors] = useState(
-    Object.keys(initialModule).reduce((accum, key) => ({ ...accum, [key]: null }), {})
-  );
-
-  const [years, setYears] = useState(null);
-  const [loadingYearsMessage, setLoadingYearsMessage] = useState('Loading records ...');
-
-  const getYears = async () => {
-    const response = await API.get('/years');
-    response.isSuccess
-      ? setYears(response.result)
-      : setLoadingYearsMessage(response.message)
-  };
-  
-  useEffect(() => { getYears() }, []);
-
-  const [leaders, setLeaders] = useState(null);
-  const [loadingLeadersMessage, setLoadingLeadersMessage] = useState('Loading records ...');
-
-  const getLeaders = async () => {
-    const response = await API.get('/users/staff');
-    response.isSuccess
-      ? setLeaders(response.result)
-      : setLoadingLeadersMessage(response.message)
-  };
-  
-  useEffect(() => { getLeaders() }, []);
-
+  const [module, errors, handleChange, handleSubmit] = Form.useForm(initialModule, conformance, validation, onCancel, onSubmit);
+  const [years, , loadingYearsMessage,] = useLoad('/years');
+  const [leaders, , loadingLeadersMessage,] = useLoad('/users/staff');
 
   // Handlers ------------------------------------
-  const handleChange = (event) => { 
-    const { name, value } = event.target;
-    const newValue = (name === 'ModuleLevel') || (name === 'ModuleYearID') || (name ==='ModuleLeaderID') ? parseInt(value) : value;
-    setModule({ ...module, [name]: newValue });
-    setErrors({ ...errors, [name]: isValid[name](newValue) ? null : errorMessage[name]});
-  };
-
-  const isValidModule = (module) => {
-    let isModuleValid = true;
-    Object.keys(module).forEach((key) => {
-      if (isValid[key](module[key])) {
-        errors[key] = null;
-      } else {
-        errors[key] = errorMessage[key];
-        isModuleValid = false;
-      }
-    });
-    return isModuleValid;
-  }
-
-  const handleCancel = () => onDismiss();
-  const handleSubmit = (event) => { 
-    event.preventDefault();
-    isValidModule(module) && onSubmit(module) && onDismiss();
-    setErrors({...errors});
-  };
-
   // View ----------------------------------------
   return (
-    <form className="BorderedForm">
+    <Form onSubmit={handleSubmit} onCancel={onCancel}>
 
-      <FormItem
+      <Form.Item
         label="Module name"
         htmlFor="ModuleName"
         advice="Please enter the name of the module"
@@ -108,9 +56,9 @@ export default function ModuleForm({ onDismiss, onSubmit, initialModule=emptyMod
           value={module.ModuleName}
           onChange={handleChange}
         />
-      </FormItem>
+      </Form.Item>
       
-      <FormItem
+      <Form.Item
         label="Module code"
         htmlFor="ModuleCode"
         advice="Please enter the module code"
@@ -122,9 +70,9 @@ export default function ModuleForm({ onDismiss, onSubmit, initialModule=emptyMod
           value={module.ModuleCode}
           onChange={handleChange}
         />
-      </FormItem>
+      </Form.Item>
 
-      <FormItem
+      <Form.Item
         label="Module level"
         htmlFor="ModuleLevel"
         advice="Choose a level between 3 and 7 inclusive"
@@ -140,9 +88,9 @@ export default function ModuleForm({ onDismiss, onSubmit, initialModule=emptyMod
             [3, 4, 5, 6, 7].map((level) => <option key={level}>{level}</option>)  
           }
         </select>
-      </FormItem>
+      </Form.Item>
 
-      <FormItem
+      <Form.Item
         label="Module year"
         htmlFor="ModuleYearID"
         advice="Select year of delivery"
@@ -164,9 +112,9 @@ export default function ModuleForm({ onDismiss, onSubmit, initialModule=emptyMod
                   }
                 </select>
         }
-      </FormItem>
+      </Form.Item>
  
-      <FormItem
+      <Form.Item
         label="Module leader"
         htmlFor="ModuleLeaderID"
         advice="Select module leader"
@@ -188,9 +136,9 @@ export default function ModuleForm({ onDismiss, onSubmit, initialModule=emptyMod
                   }
                 </select>
         }
-      </FormItem>
+      </Form.Item>
 
-      <FormItem
+      <Form.Item
         label="Module image URL"
         htmlFor="ModuleImageURL"
         advice="Please enter the URL of the module's image"
@@ -202,17 +150,8 @@ export default function ModuleForm({ onDismiss, onSubmit, initialModule=emptyMod
           value={module.ModuleImageURL}
           onChange={handleChange}
         />
-      </FormItem>
-
-      <ActionTray>
-        <ToolTipDecorator message="Submit module">
-          <ActionAdd showText onClick={handleSubmit} buttonText="Submit"/>
-        </ToolTipDecorator>
-        <ToolTipDecorator message="Cancel form">
-          <ActionClose showText onClick={handleCancel} buttonText="Cancel" />
-        </ToolTipDecorator>
-      </ActionTray>
+      </Form.Item>
       
-    </form>
+    </Form>
   );
 }
