@@ -1,31 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth.js';
-import API from '../api/API.js';
+import useLoad from '../api/useLoad.js';
 import './Pages.scss';
 import './FauxLogin.scss';
 
 export default function Login() {
   // Initialisation ------------------------------
-  const staffEndpoint = `/users/staff`;
-  const studentEndpoint = `/users/student`;
   const { login } = useAuth();
   const navigate = useNavigate();
   const { state } = useLocation();
 
   // State ---------------------------------------
-  const [students, setStudents] = useState(null);
-  const [staff, setStaff] = useState(null);
+  const [students, , loadingStudentsMessage,] = useLoad(`/users/student`);
+  const [staff, , loadingStaffMessage,] = useLoad(`/users/staff`);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const apiCall = async (endpoint,setState) => {
-    const response = await API.get(endpoint);
-    response.isSuccess && setState(response.result);
-  };
-  
-  useEffect(() => { apiCall(studentEndpoint,setStudents) }, [studentEndpoint]);
-  useEffect(() => { apiCall(staffEndpoint,setStaff) }, [staffEndpoint]);
-  
   // Context -------------------------------------
   // Methods -------------------------------------
   const handleSubmit = (event) => {
@@ -48,7 +38,7 @@ export default function Login() {
         <label>Use this dropdown to select a student</label>
         {
           !students 
-            ? <p className="formError">No student records have been recovered</p>
+            ? <p>{loadingStudentsMessage}</p>
             : <>
                 <select onChange={handleStudentChange}>
                   <option value={null}>Select student ...</option>
@@ -66,7 +56,7 @@ export default function Login() {
         <label>Use this dropdown to select a staff member</label>
         {
           !staff 
-            ? <p className="formError">No staff records have been recovered</p>
+            ? <p>{loadingStaffMessage}</p>
             : <>
                 <select onChange={handleStaffChange}>
                   <option value={null}>Select staff member ...</option>

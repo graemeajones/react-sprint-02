@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../auth/useAuth.js';
 import API from '../api/API.js';
+import useLoad from '../api/useLoad.js';
 import { ActionTray, ActionAdd } from '../UI/Actions.js';
 import ToolTipDecorator from '../UI/ToolTipDecorator.js';
 import ModulePanels from '../entities/modules/ModulePanels.js';
@@ -14,32 +15,21 @@ export default function MyModules() {
   const endpoint = '/modules';
 
   // State ---------------------------------------
-  const [modules, setModules] = useState(null);
-  const [loadingMessage, setLoadingMessage] = useState('Loading records ...');
-
+  const [modules, , loadingMessage, loadModules] = useLoad(endpoint);
   const [showNewModuleForm, setShowNewModuleForm] = useState(false);
   const [showJoinModuleForm, setShowJoinModuleForm] = useState(false);
 
   // Context -------------------------------------
   // Methods -------------------------------------
-  const getModules = async () => {
-    const response = await API.get(`/modules`);
-    response.isSuccess
-      ? setModules(response.result)
-      : setLoadingMessage(response.message)
-  };
-  
-  useEffect(() => { getModules() }, []);
-
   const handleAdd = () => setShowNewModuleForm(true);
   const handleJoin = () => setShowJoinModuleForm(true);
-  const handleDismissAdd = () => setShowNewModuleForm(false);
-  const handleDismissJoin = () => setShowJoinModuleForm(false);
-  
+  const handleCancelAdd = () => setShowNewModuleForm(false);
+  const handleCancelJoin = () => setShowJoinModuleForm(false);
+
   const handleSubmit = async (module) => {
     const response = await API.post(endpoint, module);
     return response.isSuccess
-      ? getModules() || true
+      ? loadModules(endpoint) || true
       : false;
   }
 
@@ -67,7 +57,7 @@ export default function MyModules() {
       </ActionTray>
 
       {
-        showNewModuleForm && <ModuleForm onDismiss={handleDismissAdd} onSubmit={handleSubmit} />
+        showNewModuleForm && <ModuleForm onCancel={handleCancelAdd} onSubmit={handleSubmit} />
       }
       {
         showJoinModuleForm && <p>{"<JoinModuleForm />"}</p>

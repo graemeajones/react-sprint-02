@@ -18,7 +18,7 @@ export default function ModulePanels({ modules }) {
       {
         modules.map((module) =>
           <Panel
-            key={module.ModuleCode}
+            key={module.ModuleID}
             title={`${module.ModuleCode} ${module.ModuleName}`}
             level={3}
           >
