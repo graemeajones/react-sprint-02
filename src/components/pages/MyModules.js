@@ -6,30 +6,38 @@ import { ActionTray, ActionAdd } from '../UI/Actions.js';
 import ToolTipDecorator from '../UI/ToolTipDecorator.js';
 import ModulePanels from '../entities/modules/ModulePanels.js';
 import ModuleForm from '../entities/modules/ModuleForm.js';
+import JoinModuleForm from '../entities/modules/JoinModuleForm.js';
 import './Pages.scss';
 
 export default function MyModules() {
   // Initialisation ------------------------------
   const { loggedinUser } = useAuth();
-  //const endpoint = `/modules/users/${loggedinUser.UserID}`;
-  const endpoint = '/modules';
+  const getModulesEndpoint = `/modules/users/${loggedinUser.UserID}`;
+  const postModulesEndpoint = '/modules';
+  const postModulemembersEndpoint = '/modulemembers';
+  
 
   // State ---------------------------------------
-  const [modules, , loadingMessage, loadModules] = useLoad(endpoint);
-  const [showNewModuleForm, setShowNewModuleForm] = useState(false);
+  const [modules, , loadingMessage, loadModules] = useLoad(getModulesEndpoint);
+  const [showAddModuleForm, setShowAddModuleForm] = useState(false);
   const [showJoinModuleForm, setShowJoinModuleForm] = useState(false);
 
   // Context -------------------------------------
   // Methods -------------------------------------
-  const handleAdd = () => setShowNewModuleForm(true);
-  const handleJoin = () => setShowJoinModuleForm(true);
-  const handleCancelAdd = () => setShowNewModuleForm(false);
-  const handleCancelJoin = () => setShowJoinModuleForm(false);
+  const toggleAddForm = () => setShowAddModuleForm(!showAddModuleForm);
+  const toggleJoinForm = () => setShowJoinModuleForm(!showJoinModuleForm);
+  const cancelAddForm = () => setShowAddModuleForm(false);
+  const cancelJoinForm = () => setShowJoinModuleForm(false);
 
-  const handleSubmit = async (module) => {
-    const response = await API.post(endpoint, module);
+  const handleAddSubmit = async (module) => {
+    const response = await API.post(postModulesEndpoint, module);
+    return response.isSuccess;
+  }
+
+  const handleJoinSubmit = async (modulemember) => {
+    const response = await API.post(postModulemembersEndpoint, modulemember);
     return response.isSuccess
-      ? loadModules(endpoint) || true
+      ? loadModules(getModulesEndpoint) || true
       : false;
   }
 
@@ -49,18 +57,18 @@ export default function MyModules() {
       <p>&nbsp;</p>
       <ActionTray>
         <ToolTipDecorator message="Add new module">
-          <ActionAdd showText onClick={handleAdd} buttonText="Add new module"/>
+          <ActionAdd showText onClick={toggleAddForm} buttonText="Add new module"/>
         </ToolTipDecorator>
         <ToolTipDecorator message="Join a module">
-          <ActionAdd showText onClick={handleJoin} buttonText="Join a module"/>
+          <ActionAdd showText onClick={toggleJoinForm} buttonText="Join a module"/>
         </ToolTipDecorator>
       </ActionTray>
 
       {
-        showNewModuleForm && <ModuleForm onCancel={handleCancelAdd} onSubmit={handleSubmit} />
+        showAddModuleForm && <ModuleForm onCancel={cancelAddForm} onSubmit={handleAddSubmit} />
       }
       {
-        showJoinModuleForm && <p>{"<JoinModuleForm />"}</p>
+        showJoinModuleForm && <JoinModuleForm onCancel={cancelJoinForm} onSubmit={handleJoinSubmit}/>
       }
 
     </section>
